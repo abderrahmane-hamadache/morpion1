@@ -1,6 +1,6 @@
 import sys
 import pygame
-import numpy as np
+import numpy as np  ##voir les explications precises##
 
 pygame.init()
 
@@ -22,11 +22,16 @@ CIRCLE_RADIUS = SQUARE_SIZE // 3
 CIRCLE_WIDTH = 15
 CROSS_WIDTH = 25
 
+
+##FONDS##
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("TIC TAC TOE")
 screen.fill(BLACK)
 
-board = np.zeros((BOARDS_ROWS, BOARDS_COLUMNS))
+
+##TABLEAU GRAPHIQUE
+
+board = np.zeros((BOARDS_ROWS, BOARDS_COLUMNS)) 
 
 def draw_lines(color=WHITE):
     for i in range(1, BOARDS_ROWS):
@@ -51,6 +56,8 @@ def available_square(row, col):
 def is_board_full(check_board=board):
     return not any(check_board[row][col] == 0 for row in range(BOARDS_ROWS) for col in range(BOARDS_COLUMNS))
 
+##GAME LOOP##
+
 def check_win(player, check_board=board):
     for col in range(BOARDS_COLUMNS):
         if all(check_board[row][col] == player for row in range(BOARDS_ROWS)):
@@ -59,6 +66,10 @@ def check_win(player, check_board=board):
         if all(check_board[row][col] == player for col in range(BOARDS_COLUMNS)):
             return True
     return check_board[0][0] == player == check_board[1][1] == check_board[2][2] or check_board[0][2] == player == check_board[1][1] == check_board[2][0]
+
+
+
+## AI ##
 
 def minimax(minimax_board, depth, is_maximizing):
     if check_win(2, minimax_board):
