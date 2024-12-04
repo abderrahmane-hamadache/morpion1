@@ -28,6 +28,10 @@ root.title("TIC TAC TOE")
 canvas = tk.Canvas(root, width=WIDTH, height=HEIGHT, bg=BLACK)
 canvas.pack()
 
+# Label pour afficher le gagnant
+winner_label = tk.Label(root, text="", font=("Helvetica", 14), bg=BLACK, fg=WHITE)
+winner_label.pack()
+
 def draw_lines():
     for i in range(1, BOARDS_ROWS):
         canvas.create_line(0, SQUARE_SIZE * i, WIDTH, SQUARE_SIZE * i, fill=WHITE, width=LINE_WIDTH)
@@ -105,6 +109,7 @@ def restart_game():
     game_over = False
     player = 1
     board.fill(0)
+    winner_label.config(text="")
 
 def click(event):
     global player, game_over
@@ -116,15 +121,20 @@ def click(event):
         draw_figures()
         if check_win(player):
             game_over = True
-        player = player % 2 + 1
-        if not game_over:
-            if best_move():
-                draw_figures()
-                if check_win(2):
-                    game_over = True
-                player = player % 2 + 1
-        if not game_over and is_board_full():
-            game_over = True
+            winner_label.config(text=f"Joueur {'O' if player == 1 else 'X'} a gagné!")
+        else:
+            player = player % 2 + 1
+            if not game_over:
+                if best_move():
+                    draw_figures()
+                    if check_win(2):
+                        game_over = True
+                        winner_label.config(text="Joueur X a gagné!")
+                    else:
+                        player = player % 2 + 1
+            if not game_over and is_board_full():
+                game_over = True
+                winner_label.config(text="Match nul!")
 
 def key(event):
     if event.char == 'r':
